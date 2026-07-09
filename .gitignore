@@ -30,6 +30,10 @@
 
 /public/assets
 
+# Ignore the compiled Tailwind build (rebuilt by bin/dev and at codespace create).
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
