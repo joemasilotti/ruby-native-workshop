@@ -1,17 +1,17 @@
-<div class="period-row <%= "is-current" if period.current? %>">
-  <div class="period-head">
-    <div class="period-labels">
-      <span class="period-label"><%= period.label %></span>
-      <% if period.sub_label.present? %><span class="period-sub"><%= period.sub_label %></span><% end %>
+<div class="border-b border-line py-3.5 last:border-b-0">
+  <div class="mb-2 flex items-start justify-between gap-2.5">
+    <div class="flex flex-col">
+      <span class="text-[15px] font-bold <%= "text-brand-strong" if period.current? %>"><%= period.label %></span>
+      <% if period.sub_label.present? %><span class="text-[13px] text-muted"><%= period.sub_label %></span><% end %>
     </div>
     <% if period.budget.zero? %>
-      <span class="period-chip neutral"><%= money(period.spent) %></span>
+      <span class="whitespace-nowrap rounded-full bg-surface-2 px-2.5 py-[3px] text-xs font-bold text-muted"><%= money(period.spent) %></span>
     <% elsif period.over? %>
-      <span class="period-chip over"><%= money(period.remaining.abs) %> over</span>
+      <span class="whitespace-nowrap rounded-full bg-danger-soft px-2.5 py-[3px] text-xs font-bold text-danger"><%= money(period.remaining.abs) %> over</span>
     <% else %>
-      <span class="period-chip under"><%= money(period.remaining) %> left</span>
+      <span class="whitespace-nowrap rounded-full bg-brand-soft px-2.5 py-[3px] text-xs font-bold text-brand-strong"><%= money(period.remaining) %> left</span>
     <% end %>
   </div>
   <%= render "shared/bar", percent: period.percent %>
-  <div class="period-foot"><%= money(period.spent) %> of <%= money(period.budget) %></div>
+  <div class="mt-[7px] text-[13px] tabular-nums text-muted"><%= money(period.spent) %> of <%= money(period.budget) %></div>
 </div>

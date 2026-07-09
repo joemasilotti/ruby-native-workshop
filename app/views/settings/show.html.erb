@@ -1,107 +1,40 @@
 <% content_for :title, "Settings" %>
 
-<%= native_navbar_tag("Settings") %>
-
-<header class="screen-head native:hidden">
-  <h1 class="screen-title">Settings</h1>
+<header class="mb-[18px]">
+  <h1 class="text-[26px] font-bold tracking-tight">Settings</h1>
 </header>
 
-<section class="block">
-  <div class="block-head">
-    <h2 class="block-title">Budget</h2>
-    <%= link_to "Rename", edit_household_path(@household), class: "block-action" %>
+<section class="mt-[22px]">
+  <div class="flex items-baseline justify-between">
+    <h2 class="mb-2.5 text-[15px] font-bold uppercase tracking-[0.04em] text-muted">Categories</h2>
+    <%= link_to "Add", new_category_path, class: "text-sm font-semibold" %>
   </div>
-  <div class="card">
-    <div class="settings-row">
-      <span class="settings-label">Name</span>
-      <span class="settings-value"><%= @household.name %></span>
-    </div>
-  </div>
-</section>
-
-<section class="block">
-  <h2 class="block-title">Share this budget</h2>
-  <div class="card invite-card">
-    <p class="invite-help">Share this code so someone can join and track spending with you.</p>
-    <div class="invite-code"><%= @household.invite_code %></div>
-    <div class="invite-actions">
-      <%= button_to "New code", regenerate_invite_household_path(@household), method: :post,
-            class: "btn btn-ghost",
-            data: { turbo_confirm: "Generate a new code? The old one stops working." } %>
-      <%= link_to "Enter a code", new_join_path, class: "btn btn-ghost" %>
-    </div>
-  </div>
-</section>
-
-<section class="block">
-  <h2 class="block-title">Members</h2>
-  <div class="card list">
-    <% @members.each do |membership| %>
-      <div class="row member-row">
-        <span class="avatar"><%= membership.user.initials %></span>
-        <span class="row-body">
-          <span class="row-title">
-            <%= membership.user.display_name %><% if membership.user_id == current_user.id %> <span class="tag">you</span><% end %>
-          </span>
-          <span class="row-sub"><%= membership.owner? ? "Owner" : "Member" %> · <%= membership.user.email_address %></span>
-        </span>
-        <% if membership.user_id == current_user.id %>
-          <%= button_to "Leave", membership_path(membership), method: :delete,
-                class: "row-action danger", data: { turbo_confirm: "Leave this budget?" } %>
-        <% elsif @current_membership&.owner? %>
-          <%= button_to "Remove", membership_path(membership), method: :delete,
-                class: "row-action danger", data: { turbo_confirm: "Remove #{membership.user.display_name}?" } %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-</section>
-
-<% if @other_households.any? %>
-  <section class="block">
-    <h2 class="block-title">Switch budget</h2>
-    <div class="card list">
-      <% @other_households.each do |household| %>
-        <%= button_to switch_household_path(household), method: :post, class: "row switch-row" do %>
-          <span class="row-body"><span class="row-title"><%= household.name %></span></span>
-          <span class="row-amount">Switch ›</span>
-        <% end %>
-      <% end %>
-    </div>
-  </section>
-<% end %>
-
-<section class="block">
-  <div class="block-head">
-    <h2 class="block-title">Categories</h2>
-    <%= link_to "Add", new_category_path, class: "block-action" %>
-  </div>
-  <div class="card list">
+  <div class="rounded-2xl border border-line bg-surface px-4 py-1 shadow-card">
     <% @categories.each do |category| %>
-      <%= link_to edit_category_path(category), class: "row" do %>
-        <span class="row-emoji" style="--chip-color: <%= category.color %>"><%= category.emoji %></span>
-        <span class="row-body">
-          <span class="row-title"><%= category.name %></span>
-          <span class="row-sub"><%= money(category.budget_amount) %> per <%= category.period_label %></span>
+      <%= link_to edit_category_path(category), class: "flex w-full items-center gap-3 border-b border-line py-[13px] text-left last:border-b-0" do %>
+        <span class="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-[11px] text-[19px]" style="background: color-mix(in srgb, <%= category.color %> 16%, var(--color-surface))"><%= category.emoji %></span>
+        <span class="flex min-w-0 flex-1 flex-col">
+          <span class="truncate text-[15px] font-semibold"><%= category.name %></span>
+          <span class="text-[13px] text-muted"><%= money(category.budget_amount) %> per <%= category.period_label %></span>
         </span>
-        <span class="row-amount">›</span>
+        <span class="whitespace-nowrap font-bold text-muted">›</span>
       <% end %>
     <% end %>
   </div>
 </section>
 
-<section class="block">
-  <h2 class="block-title">Account</h2>
-  <div class="card list">
-    <%= link_to edit_profile_path, class: "row" do %>
-      <span class="avatar"><%= current_user.initials %></span>
-      <span class="row-body">
-        <span class="row-title"><%= current_user.display_name %></span>
-        <span class="row-sub"><%= current_user.email_address %></span>
+<section class="mt-[22px]">
+  <h2 class="mb-2.5 text-[15px] font-bold uppercase tracking-[0.04em] text-muted">Account</h2>
+  <div class="rounded-2xl border border-line bg-surface px-4 py-1 shadow-card">
+    <%= link_to edit_profile_path, class: "flex w-full items-center gap-3 py-[13px] text-left" do %>
+      <span class="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-full bg-brand-soft text-sm font-bold text-brand-strong"><%= current_user.initials %></span>
+      <span class="flex min-w-0 flex-1 flex-col">
+        <span class="truncate text-[15px] font-semibold"><%= current_user.display_name %></span>
+        <span class="text-[13px] text-muted"><%= current_user.email_address %></span>
       </span>
-      <span class="row-amount">›</span>
+      <span class="whitespace-nowrap font-bold text-muted">›</span>
     <% end %>
   </div>
   <%= button_to "Sign out", session_path, method: :delete,
-        class: "btn btn-ghost btn-block signout", data: { turbo_confirm: "Sign out?" } %>
+        class: "btn btn-ghost btn-block !text-danger", data: { turbo_confirm: "Sign out?" } %>
 </section>

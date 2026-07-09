@@ -1,15 +1,13 @@
 class ExpensesController < ApplicationController
-  before_action :require_household
   before_action :set_categories, only: %i[ new create edit update ]
   before_action :set_expense, only: %i[ edit update destroy ]
 
   def new
-    @expense = current_household.expenses.new(spent_on: Date.current, category_id: params[:category_id])
+    @expense = current_user.expenses.new(spent_on: Date.current, category_id: params[:category_id])
   end
 
   def create
-    @expense = current_household.expenses.new(expense_params)
-    @expense.user = current_user
+    @expense = current_user.expenses.new(expense_params)
     if @expense.save
       redirect_to root_path, notice: "Added #{helpers.money(@expense.amount)} to #{@expense.category.name}."
     else
@@ -36,11 +34,11 @@ class ExpensesController < ApplicationController
   private
 
   def set_expense
-    @expense = current_household.expenses.find(params[:id])
+    @expense = current_user.expenses.find(params[:id])
   end
 
   def set_categories
-    @categories = current_household.categories.ordered
+    @categories = current_user.categories.ordered
   end
 
   def expense_params

@@ -1,20 +1,19 @@
 class CategoriesController < ApplicationController
-  before_action :require_household
   before_action :set_category, only: %i[ edit update destroy ]
 
   def index
-    @categories = current_household.categories.ordered
+    @categories = current_user.categories.ordered
   end
 
   def new
-    @category = current_household.categories.new(
+    @category = current_user.categories.new(
       period: Category::PERIODS.include?(params[:period]) ? params[:period] : "weekly",
       color: Category::COLORS.sample
     )
   end
 
   def create
-    @category = current_household.categories.new(category_params)
+    @category = current_user.categories.new(category_params)
     if @category.save
       redirect_to settings_path, notice: "Added #{@category.name}."
     else
@@ -41,7 +40,7 @@ class CategoriesController < ApplicationController
   private
 
   def set_category
-    @category = current_household.categories.find(params[:id])
+    @category = current_user.categories.find(params[:id])
   end
 
   def category_params

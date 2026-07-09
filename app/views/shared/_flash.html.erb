@@ -1,6 +1,6 @@
 <% flash.each do |type, message| %>
   <% next if message.blank? %>
-  <div class="flash flash-<%= type == "alert" ? "alert" : "notice" %>" role="status">
+  <div class="mb-3.5 rounded-xl px-3.5 py-3 text-sm font-semibold <%= type == "alert" ? "bg-danger-soft text-danger" : "bg-brand-soft text-brand-strong" %>" role="status">
     <%= message %>
   </div>
 <% end %>

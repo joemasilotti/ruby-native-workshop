@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/* Design tokens, ported from Penny Pincher's hand-written stylesheet. */
+@theme {
+  --color-canvas: #f5f7f4;
+  --color-surface: #ffffff;
+  --color-surface-2: #eef1ec;
+  --color-ink: #14201a;
+  --color-muted: #687a70;
+  --color-line: #e4e8e0;
+  --color-brand: #16a34a;
+  --color-brand-strong: #15803d;
+  --color-brand-soft: #dcfce7;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fee2e2;
+  --color-warn: #d97706;
+  --color-warn-soft: #fef3c7;
+
+  --shadow-card: 0 1px 2px rgb(16 32 24 / 0.06), 0 8px 24px rgb(16 32 24 / 0.05);
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, Helvetica, Arial, sans-serif;
+}
+
+@layer base {
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 { @apply font-bold tracking-tight; }
+
+  /* Every text input shares one look. */
+  input[type="text"], input[type="email"], input[type="password"],
+  input[type="number"], input[type="date"] {
+    @apply w-full appearance-none rounded-xl border border-line bg-surface px-3.5 py-3 text-base text-ink;
+  }
+  input:focus-visible {
+    @apply border-brand outline-none;
+    box-shadow: 0 0 0 3px var(--color-brand-soft);
+  }
+  input::placeholder { color: color-mix(in srgb, var(--color-muted) 75%, transparent); }
+
+  /* No number spinners. */
+  input[type="number"] { appearance: textfield; }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl
+           border border-transparent px-[18px] py-3 text-base font-semibold leading-none transition;
+  }
+  .btn:active { filter: brightness(0.95); }
+  .btn-primary { @apply bg-brand text-white; }
+  .btn-ghost   { @apply bg-surface-2 text-ink; }
+  .btn-danger  { @apply border-line bg-transparent text-danger; }
+  .btn-block   { @apply mt-4 flex w-full; }
+
+  .form-errors { @apply mb-[15px] rounded-xl bg-danger-soft px-3 py-2.5 text-sm font-semibold text-danger; }
+
+  /* Amount hero (expense form) */
+  .amount-field { @apply flex items-center justify-center gap-1 pt-2 pb-0.5; }
+  .amount-currency { @apply text-[34px] font-bold text-muted; }
+  .amount-input {
+    @apply w-full max-w-[220px] border-0 bg-transparent p-0 text-center text-[52px] font-extrabold text-ink tabular-nums;
+    box-shadow: none !important;
+  }
+  .amount-input:focus { @apply outline-none; box-shadow: none !important; }
+  .amount-inline { @apply flex items-center gap-2; }
+  .amount-currency-sm { @apply text-lg font-bold text-muted; }
+
+  /* Category picker chips */
+  .picker { @apply mt-1 mb-[15px] border-0 p-0; }
+  .picker legend { @apply mb-2 p-0 text-sm font-semibold; }
+  .chips { @apply flex flex-wrap gap-2; }
+  .chip { @apply inline-flex cursor-pointer select-none items-center gap-[7px] rounded-full border-[1.5px] border-line bg-surface px-[13px] py-[9px] text-sm font-semibold; }
+  .chip:has(.chip-input:checked) {
+    border-color: var(--chip-color, var(--color-brand));
+    background: color-mix(in srgb, var(--chip-color, var(--color-brand)) 14%, var(--color-surface));
+    color: color-mix(in srgb, var(--chip-color, var(--color-brand)) 60%, var(--color-ink));
+  }
+  .chip-input { @apply pointer-events-none absolute opacity-0; }
+
+  /* Color swatches */
+  .swatches { @apply flex flex-wrap gap-2.5; }
+  .swatch {
+    @apply relative h-[34px] w-[34px] cursor-pointer rounded-full;
+    background: var(--swatch);
+    box-shadow: inset 0 0 0 2px var(--color-surface), 0 0 0 1px var(--color-line);
+  }
+  .swatch-input { @apply absolute opacity-0; }
+  .swatch:has(.swatch-input:checked) { box-shadow: inset 0 0 0 3px var(--color-surface), 0 0 0 2px var(--swatch); }
+
+  /* Segmented control */
+  .segmented { @apply flex gap-1.5 rounded-xl bg-surface-2 p-1; }
+  .seg { @apply m-0 flex-1; }
+  .seg-input { @apply absolute opacity-0; }
+  .seg span { @apply block rounded-[9px] py-[9px] text-center text-[15px] font-semibold text-muted; }
+  .seg:has(.seg-input:checked) span { @apply bg-surface text-ink shadow-card; }
+
+  /* Emoji input override */
+  .emoji-input { @apply text-center; font-size: 22px !important; }
+}

@@ -16,33 +16,28 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "ruby_native", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
     <% if authenticated? %>
-      <%= native_tabs_tag %>
-
-      <% unless native_app? %>
-        <header class="topbar">
-          <div class="topbar-inner">
-            <%= link_to root_path, class: "brand", aria: { label: "Penny Pincher" } do %>
-              <span class="brand-mark">¢</span>
-              <span class="brand-name">Penny Pincher</span>
-            <% end %>
-            <nav class="topnav">
-              <%= link_to "Home",     root_path,    class: class_names("topnav-link", active: current_page?(root_path)) %>
-              <%= link_to "History",  summary_path, class: class_names("topnav-link", active: current_page?(summary_path)) %>
-              <%= link_to "Settings", settings_path, class: class_names("topnav-link", active: current_page?(settings_path)) %>
-            </nav>
-          </div>
-        </header>
-      <% end %>
+      <header class="sticky top-0 z-20 border-b border-line bg-canvas/90 backdrop-blur-md backdrop-saturate-150">
+        <div class="mx-auto flex h-14 w-[min(100%-2rem,560px)] items-center justify-between">
+          <%= link_to root_path, class: "inline-flex items-center gap-2.5 font-bold text-ink", aria: { label: "Penny Pincher" } do %>
+            <span class="grid h-7 w-7 place-items-center rounded-[9px] bg-brand text-lg font-extrabold text-white">¢</span>
+            <span class="text-base">Penny Pincher</span>
+          <% end %>
+          <nav class="flex gap-1">
+            <%= link_to "Home", root_path, class: class_names("rounded-[9px] px-3 py-1.5 text-sm font-semibold", current_page?(root_path) ? "bg-surface-2 text-ink" : "text-muted") %>
+            <%= link_to "History", summary_path, class: class_names("rounded-[9px] px-3 py-1.5 text-sm font-semibold", current_page?(summary_path) ? "bg-surface-2 text-ink" : "text-muted") %>
+            <%= link_to "Settings", settings_path, class: class_names("rounded-[9px] px-3 py-1.5 text-sm font-semibold", current_page?(settings_path) ? "bg-surface-2 text-ink" : "text-muted") %>
+          </nav>
+        </div>
+      </header>
     <% end %>
 
-    <main class="page native-inset">
+    <main class="mx-auto w-[min(100%-2rem,560px)] pt-[18px] pb-11">
       <%= render "shared/flash" %>
       <%= yield %>
     </main>

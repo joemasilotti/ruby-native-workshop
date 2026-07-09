@@ -4,6 +4,8 @@ source "https://rubygems.org"
 gem "rails", "~> 8.1.3"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
+# Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
+gem "tailwindcss-rails"
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", ">= 2.1"
 # Use the Puma web server [https://github.com/puma/puma]
@@ -39,9 +41,6 @@ gem "image_processing", "~> 1.2"
 
 # Turn this Rails app into an iOS/Android app [https://rubynative.com]
 gem "ruby_native", "~> 0.10.4"
-
-# Native push notifications (APNs / FCM) for Ruby Native apps
-gem "action_push_native"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

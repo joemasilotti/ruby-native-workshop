@@ -1,18 +1,19 @@
 <%#
   Locals: title, spent, budget, remaining, percent
 %>
-<div class="summary-card">
-  <div class="summary-card-head">
-    <span class="summary-card-title"><%= title %></span>
-    <span class="summary-card-pct <%= bar_state(percent) %>"><%= percent %>%</span>
+<% pct = { "ok" => "bg-brand-soft text-brand-strong", "close" => "bg-warn-soft text-warn", "over" => "bg-danger-soft text-danger" }[bar_state(percent)] %>
+<div class="rounded-2xl border border-line bg-surface p-[15px] shadow-card">
+  <div class="flex items-center justify-between">
+    <span class="text-[13px] font-bold text-muted"><%= title %></span>
+    <span class="rounded-full px-[7px] py-0.5 text-xs font-bold <%= pct %>"><%= percent %>%</span>
   </div>
 
-  <div class="summary-card-amount"><%= money(spent) %></div>
-  <div class="summary-card-sub">of <%= money(budget) %></div>
+  <div class="mt-2.5 text-[27px] font-extrabold tracking-tight tabular-nums"><%= money(spent) %></div>
+  <div class="mb-3 text-[13px] text-muted">of <%= money(budget) %></div>
 
   <%= render "shared/bar", percent: percent %>
 
-  <div class="summary-card-foot <%= "over" if remaining.negative? %>">
+  <div class="mt-2.5 text-[13px] font-semibold <%= remaining.negative? ? "text-danger" : "text-brand-strong" %>">
     <% if remaining.negative? %>
       <%= money(remaining.abs) %> over budget
     <% else %>

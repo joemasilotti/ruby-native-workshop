@@ -2,7 +2,11 @@
   Renders a budget progress bar.
   Locals: percent (Integer), color (optional hex for the fill).
 %>
-<div class="bar" role="progressbar" aria-valuenow="<%= bar_width(percent) %>" aria-valuemin="0" aria-valuemax="100">
-  <div class="bar-fill <%= bar_state(percent) %>"
-       style="width: <%= bar_width(percent) %>%;<%= " --bar-color: #{color};" if local_assigns[:color].present? %>"></div>
+<%
+  fill = local_assigns[:color].presence
+  fill_class = fill ? nil : { "ok" => "bg-brand", "close" => "bg-warn", "over" => "bg-danger" }[bar_state(percent)]
+%>
+<div class="h-2 overflow-hidden rounded-full bg-surface-2" role="progressbar" aria-valuenow="<%= bar_width(percent) %>" aria-valuemin="0" aria-valuemax="100">
+  <div class="h-full rounded-full transition-[width] duration-300 <%= fill_class %>"
+       style="width: <%= bar_width(percent) %>%;<%= " background: #{fill};" if fill %>"></div>
 </div>

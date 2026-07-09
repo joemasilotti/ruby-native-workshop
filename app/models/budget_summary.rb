@@ -1,4 +1,4 @@
-# Computes spending vs. budget for a household over the current week and month.
+# Computes spending vs. budget for a user over the current week and month.
 # All amounts are whole dollars (no cents).
 class BudgetSummary
   CategoryProgress = Data.define(:category, :spent) do
@@ -15,16 +15,16 @@ class BudgetSummary
     end
   end
 
-  def initialize(household, date: Date.current)
-    @household = household
+  def initialize(user, date: Date.current)
+    @user = user
     @date = date
   end
 
   def week_range = @date.beginning_of_week..@date.end_of_week
   def month_range = @date.beginning_of_month..@date.end_of_month
 
-  def weekly = @weekly ||= build(@household.categories.weekly.ordered, week_range)
-  def monthly = @monthly ||= build(@household.categories.monthly.ordered, month_range)
+  def weekly = @weekly ||= build(@user.categories.weekly.ordered, week_range)
+  def monthly = @monthly ||= build(@user.categories.monthly.ordered, month_range)
 
   def weekly_budget = weekly.sum(&:budget)
   def weekly_spent = weekly.sum(&:spent)
@@ -39,7 +39,7 @@ class BudgetSummary
   # Whole-month snapshot across every category: all spending this month vs. the
   # total budget, with weekly budgets scaled up to the length of the month.
   def month_label = @date.strftime("%B")
-  def snapshot_spent = @snapshot_spent ||= @household.expenses.between(month_range).sum(:amount)
+  def snapshot_spent = @snapshot_spent ||= @user.expenses.between(month_range).sum(:amount)
   def snapshot_budget = monthly_budget + (weekly_budget * weeks_in_month).round
   def snapshot_remaining = snapshot_budget - snapshot_spent
   def snapshot_percent = percent(snapshot_spent, snapshot_budget)
@@ -53,7 +53,7 @@ class BudgetSummary
   def weeks_in_month = @date.end_of_month.day / 7.0
 
   def build(categories, range)
-    spent_by_category = @household.expenses.between(range).group(:category_id).sum(:amount)
+    spent_by_category = @user.expenses.between(range).group(:category_id).sum(:amount)
     categories.map do |category|
       CategoryProgress.new(category:, spent: spent_by_category[category.id] || 0)
     end

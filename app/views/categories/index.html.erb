@@ -1,21 +1,19 @@
 <% content_for :title, "Categories" %>
 
-<%= native_navbar_tag("Categories") %>
-
-<header class="screen-head with-back native:hidden">
-  <%= link_to settings_path, class: "back-link" do %>‹ Settings<% end %>
-  <h1 class="screen-title">Categories</h1>
+<header class="mb-[18px] flex items-center gap-1.5">
+  <%= link_to "‹ Settings", settings_path, class: "px-0.5 py-1 text-[15px] font-semibold text-muted" %>
+  <h1 class="text-xl font-bold tracking-tight">Categories</h1>
 </header>
 
-<div class="card list">
+<div class="rounded-2xl border border-line bg-surface px-4 py-1 shadow-card">
   <% @categories.each do |category| %>
-    <%= link_to edit_category_path(category), class: "row" do %>
-      <span class="row-emoji" style="--chip-color: <%= category.color %>"><%= category.emoji %></span>
-      <span class="row-body">
-        <span class="row-title"><%= category.name %></span>
-        <span class="row-sub"><%= money(category.budget_amount) %> per <%= category.period_label %></span>
+    <%= link_to edit_category_path(category), class: "flex w-full items-center gap-3 border-b border-line py-[13px] text-left last:border-b-0" do %>
+      <span class="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-[11px] text-[19px]" style="background: color-mix(in srgb, <%= category.color %> 16%, var(--color-surface))"><%= category.emoji %></span>
+      <span class="flex min-w-0 flex-1 flex-col">
+        <span class="truncate text-[15px] font-semibold"><%= category.name %></span>
+        <span class="text-[13px] text-muted"><%= money(category.budget_amount) %> per <%= category.period_label %></span>
       </span>
-      <span class="row-amount">›</span>
+      <span class="whitespace-nowrap font-bold text-muted">›</span>
     <% end %>
   <% end %>
 </div>

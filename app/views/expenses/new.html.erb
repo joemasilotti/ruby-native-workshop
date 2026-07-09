@@ -1,16 +1,10 @@
 <% content_for :title, "Add expense" %>
 
-<%# Presented modally in the app (path ends in /new). %>
-<%= native_form_tag %>
-<%= native_navbar_tag("Add expense") do |navbar| %>
-  <% navbar.submit_button title: "Add", click: "#expense-submit" %>
-<% end %>
-
-<header class="screen-head with-back native:hidden">
-  <%= link_to root_path, class: "back-link" do %>‹ Cancel<% end %>
-  <h1 class="screen-title">Add expense</h1>
+<header class="mb-[18px] flex items-center gap-1.5">
+  <%= link_to "‹ Cancel", root_path, class: "px-0.5 py-1 text-[15px] font-semibold text-muted" %>
+  <h1 class="text-xl font-bold tracking-tight">Add expense</h1>
 </header>
 
-<div class="card">
+<div class="rounded-2xl border border-line bg-surface p-4 shadow-card">
   <%= render "form" %>
 </div>

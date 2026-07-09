@@ -1,4 +1,10 @@
-#!/usr/bin/env ruby
-# Default to port 3006. Override with `bin/dev -p 4000` or `PORT=4000 bin/dev`.
-ENV["PORT"] ||= "3006"
-exec "./bin/rails", "server", *ARGV
+#!/usr/bin/env sh
+
+if ! gem list -i foreman > /dev/null 2>&1; then
+  echo "Installing foreman..."
+  gem install foreman
+fi
+
+export PORT="${PORT:-3006}"
+
+exec foreman start -f Procfile.dev "$@"

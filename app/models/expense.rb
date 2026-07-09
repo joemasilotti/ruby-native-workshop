@@ -1,11 +1,10 @@
 class Expense < ApplicationRecord
-  belongs_to :household
   belongs_to :category
   belongs_to :user
 
   validates :amount, numericality: { only_integer: true, greater_than: 0 }
   validates :spent_on, presence: true
-  validate :category_belongs_to_household
+  validate :category_belongs_to_user
 
   before_validation :apply_defaults
 
@@ -16,11 +15,10 @@ class Expense < ApplicationRecord
 
   def apply_defaults
     self.spent_on ||= Date.current
-    self.household_id ||= category&.household_id
   end
 
-  def category_belongs_to_household
-    return if category.nil? || household_id.nil?
-    errors.add(:category, "is not in this budget") if category.household_id != household_id
+  def category_belongs_to_user
+    return if category.nil? || user_id.nil?
+    errors.add(:category, "is not one of yours") if category.user_id != user_id
   end
 end

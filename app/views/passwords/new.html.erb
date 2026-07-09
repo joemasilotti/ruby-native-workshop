@@ -1,24 +1,22 @@
 <% content_for :title, "Reset password" %>
 
-<%= native_navbar_tag("Reset password") %>
-
-<div class="auth">
-  <div class="auth-brand">
-    <span class="brand-mark brand-mark-lg">¢</span>
-    <h1>Forgot your password?</h1>
-    <p>We'll email you a reset link.</p>
+<div class="mx-auto w-[min(100%-2rem,400px)] pt-10">
+  <div class="mb-[22px] text-center">
+    <span class="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-brand text-[34px] font-extrabold text-white">¢</span>
+    <h1 class="mt-3.5 text-2xl">Forgot your password?</h1>
+    <p class="mt-1.5 text-muted">We'll email you a reset link.</p>
   </div>
 
-  <%= form_with url: passwords_path, class: "card form" do |form| %>
-    <div class="field">
-      <%= form.label :email_address, "Email" %>
+  <%= form_with url: passwords_path, class: "rounded-2xl border border-line bg-surface p-4 shadow-card" do |form| %>
+    <div class="mb-[15px]">
+      <%= form.label :email_address, "Email", class: "mb-1.5 block text-sm font-semibold" %>
       <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username",
             placeholder: "you@example.com", value: params[:email_address] %>
     </div>
     <%= form.submit "Email reset instructions", class: "btn btn-primary btn-block" %>
   <% end %>
 
-  <p class="auth-switch">
-    <%= link_to "Back to sign in", new_session_path %>
+  <p class="mt-[18px] text-center text-[15px] text-muted">
+    <%= link_to "Back to sign in", new_session_path, class: "font-semibold text-brand-strong" %>
   </p>
 </div>

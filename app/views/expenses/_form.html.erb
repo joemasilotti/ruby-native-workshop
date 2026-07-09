@@ -1,4 +1,4 @@
-<%= form_with model: @expense, class: "expense-form" do |form| %>
+<%= form_with model: @expense do |form| %>
   <% if @expense.errors.any? %>
     <div class="form-errors">
       <%= @expense.errors.full_messages.to_sentence.capitalize %>.
@@ -11,7 +11,7 @@
           min: 1, step: 1, placeholder: "0", autofocus: @expense.new_record?,
           class: "amount-input", aria: { label: "Amount in dollars" } %>
   </div>
-  <p class="amount-hint">Whole dollars. No cents.</p>
+  <p class="mb-2 text-center text-[13px] text-muted">Whole dollars. No cents.</p>
 
   <% if @categories.any? %>
     <fieldset class="picker">
@@ -21,30 +21,28 @@
           <label class="chip" style="--chip-color: <%= category.color %>">
             <%= form.radio_button :category_id, category.id,
                   checked: @expense.category_id == category.id, class: "chip-input" %>
-            <span class="chip-emoji"><%= category.emoji %></span>
-            <span class="chip-name"><%= category.name %></span>
+            <span class="text-base"><%= category.emoji %></span>
+            <span><%= category.name %></span>
           </label>
         <% end %>
       </div>
     </fieldset>
   <% else %>
-    <p class="field-hint">
-      No categories yet. <%= link_to "Add one first", new_category_path %>.
+    <p class="text-[13px] text-muted">
+      No categories yet. <%= link_to "Add one first", new_category_path, class: "font-semibold text-brand-strong" %>.
     </p>
   <% end %>
 
-  <div class="field">
-    <%= form.label :note, "Note (optional)" %>
+  <div class="mb-[15px]">
+    <%= form.label :note, "Note (optional)", class: "mb-1.5 block text-sm font-semibold" %>
     <%= form.text_field :note, placeholder: "What was it for?", maxlength: 100 %>
   </div>
 
-  <div class="field">
-    <%= form.label :spent_on, "Date" %>
+  <div class="mb-[15px]">
+    <%= form.label :spent_on, "Date", class: "mb-1.5 block text-sm font-semibold" %>
     <%= form.date_field :spent_on, value: @expense.spent_on %>
   </div>
 
-  <%# Hidden in the app: the native navbar's submit button triggers this. %>
   <%= form.submit(@expense.new_record? ? "Add expense" : "Save changes",
-        id: "expense-submit", class: "btn btn-primary btn-block native:hidden",
-        data: native_haptic_data(:success)) %>
+        id: "expense-submit", class: "btn btn-primary btn-block") %>
 <% end %>

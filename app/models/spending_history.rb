@@ -1,4 +1,4 @@
-# Past weeks and months with spending compared against the household's current
+# Past weeks and months with spending compared against the user's current
 # budget. Historical budgets are not versioned, so each period is measured
 # against today's category budgets, which is good enough for a personal tracker.
 class SpendingHistory
@@ -13,13 +13,13 @@ class SpendingHistory
     end
   end
 
-  def initialize(household, today: Date.current)
-    @household = household
+  def initialize(user, today: Date.current)
+    @user = user
     @today = today
   end
 
   def weeks(count: 8)
-    budget = @household.categories.weekly.sum(:budget_amount)
+    budget = @user.categories.weekly.sum(:budget_amount)
     (0...count).map do |offset|
       start = (@today - offset.weeks).beginning_of_week
       finish = start.end_of_week
@@ -34,7 +34,7 @@ class SpendingHistory
   end
 
   def months(count: 6)
-    budget = @household.categories.monthly.sum(:budget_amount)
+    budget = @user.categories.monthly.sum(:budget_amount)
     (0...count).map do |offset|
       start = (@today - offset.months).beginning_of_month
       finish = start.end_of_month
@@ -51,7 +51,7 @@ class SpendingHistory
   private
 
   def spent_in(range, period)
-    @household.expenses.between(range)
+    @user.expenses.between(range)
       .joins(:category).where(categories: { period: period })
       .sum(:amount)
   end

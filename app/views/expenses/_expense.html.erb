@@ -1,10 +1,10 @@
-<%= link_to edit_expense_path(expense), class: "row expense-row" do %>
-  <span class="row-emoji" style="--chip-color: <%= expense.category.color %>"><%= expense.category.emoji %></span>
-  <span class="row-body">
-    <span class="row-title">
-      <%= expense.category.name %><% if expense.note.present? %> · <span class="row-note"><%= expense.note %></span><% end %>
+<%= link_to edit_expense_path(expense), class: "flex w-full items-center gap-3 border-b border-line py-[13px] text-left last:border-b-0" do %>
+  <span class="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-[11px] text-[19px]" style="background: color-mix(in srgb, <%= expense.category.color %> 16%, var(--color-surface))"><%= expense.category.emoji %></span>
+  <span class="flex min-w-0 flex-1 flex-col">
+    <span class="truncate text-[15px] font-semibold">
+      <%= expense.category.name %><% if expense.note.present? %> · <span class="font-medium text-muted"><%= expense.note %></span><% end %>
     </span>
-    <span class="row-sub"><%= expense.user.display_name %> · <%= expense.spent_on.strftime("%b %-d") %></span>
+    <span class="text-[13px] text-muted"><%= expense.spent_on.strftime("%b %-d") %></span>
   </span>
-  <span class="row-amount"><%= money(expense.amount) %></span>
+  <span class="whitespace-nowrap font-bold tabular-nums"><%= money(expense.amount) %></span>
 <% end %>
