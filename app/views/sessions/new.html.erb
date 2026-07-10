@@ -30,4 +30,11 @@
   <p class="mt-[18px] text-center text-[15px] text-muted">
     New here? <%= link_to "Create an account", new_registration_path, class: "font-semibold text-brand-strong" %>
   </p>
+
+  <% if Rails.env.development? %>
+    <hr class="my-8 text-gray-300">
+    <p class="text-center text-[15px] text-muted">
+      <%= link_to "Scan QR code", qr_path, class: "btn btn-ghost btn-block" %>
+    </p>
+  <% end %>
 </div>

@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# Print a QR code for this Codespace's public URL so you can open the app on
+# your phone without copy-pasting. Set port 3000 to Public in the PORTS tab
+# first, then run `bin/qr` and scan the code with your camera.
+require_relative "../config/boot"
+require "rqrcode"
+
+port = ENV.fetch("PORT", "3000")
+name = ENV["CODESPACE_NAME"]
+domain = ENV["GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN"]
+
+unless name && domain
+  abort "Not running in a Codespace, so there's no public URL to share."
+end
+
+url = "https://#{name}-#{port}.#{domain}"
+
+puts
+puts "Make sure port #{port} is set to Public in the PORTS tab, then scan:"
+puts
+puts RQRCode::QRCode.new(url).as_ansi
+puts url
+puts

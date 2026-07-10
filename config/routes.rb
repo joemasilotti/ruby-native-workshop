@@ -8,5 +8,6 @@ Rails.application.routes.draw do
   resources :expenses, only: [ :new, :create, :edit, :update, :destroy ]
   resources :categories, except: [ :show ]
   resource :profile, only: [ :edit, :update ]
+  get "qr", to: "qr#show"
   get "up" => "rails/health#show", as: :rails_health_check
 end
